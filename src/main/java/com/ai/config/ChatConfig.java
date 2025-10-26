@@ -18,7 +18,11 @@ public class ChatConfig {
                 MessageChatMemoryAdvisor.builder(chatMemory).build();
 
         return chatClientBuilder
-                .defaultAdvisors(new TokenAdvisor(), messageChatMemoryAdvisor, new SimpleLoggerAdvisor())
+                .defaultAdvisors(
+//                        new TokenAdvisor(),
+                        messageChatMemoryAdvisor
+//                        new SimpleLoggerAdvisor()
+                )
                 .build();
     }
 }
