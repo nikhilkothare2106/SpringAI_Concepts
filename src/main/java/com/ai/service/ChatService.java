@@ -3,6 +3,7 @@ package com.ai.service;
 import com.ai.advisor.TokenAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,14 @@ public class ChatService {
     public ChatService(ChatClient chatClient){
         this.chatClient = chatClient;
     }
-    public String chat(String q) {
+    public String chat(String q,String userId) {
         return chatClient
                 .prompt(q)
-                .advisors(new SimpleLoggerAdvisor(),new TokenAdvisor())
-                .system(system->system.text(systemMessage))
-                .user(user->user.text(userMessage))
+                .advisors(advisorSpec -> {
+                    advisorSpec.param(ChatMemory.CONVERSATION_ID,userId);
+                })
+//                .system(system->system.text(systemMessage))
+//                .user(user->user.text(userMessage))
                 .call()
                 .content();
 
@@ -37,7 +40,6 @@ public class ChatService {
     public Flux<String> streamChat(String q) {
         return chatClient
                 .prompt(q)
-                .advisors(new SimpleLoggerAdvisor(),new TokenAdvisor())
                 .system(system->system.text(systemMessage))
                 .user(user->user.text(userMessage))
                 .stream()
