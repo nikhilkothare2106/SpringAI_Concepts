@@ -1,1 +1,2 @@
-Explain the concept in detail {concept}.
+User query:
+{query}
