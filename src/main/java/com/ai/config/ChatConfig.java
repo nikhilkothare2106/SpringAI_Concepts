@@ -20,8 +20,8 @@ public class ChatConfig {
         return chatClientBuilder
                 .defaultAdvisors(
 //                        new TokenAdvisor(),
-                        messageChatMemoryAdvisor
-//                        new SimpleLoggerAdvisor()
+//                        messageChatMemoryAdvisor,
+                        new SimpleLoggerAdvisor()
                 )
                 .build();
     }
